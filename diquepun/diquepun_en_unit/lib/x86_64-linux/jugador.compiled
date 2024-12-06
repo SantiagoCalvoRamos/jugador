@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1704440408"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fu/home/santiago/programacion/programacion_en_pascal/jugador/diquepun/diquepun_en_unit/ -FU/home/santiago/programacion/programacion_en_pascal/jugador/diquepun/diquepun_en_unit/lib/x86_64-linux/ -FE/home/santiago/programacion/programacion_en_pascal/jugador/diquepun/diquepun_en_unit/ -o/home/santiago/programacion/programacion_en_pascal/jugador/diquepun/diquepun_en_unit/jugador jugador.pas"/>
+</CONFIG>
