@@ -1,4 +1,6 @@
 {
+Copyrigth (C) 2024 Santiago Calvo Ramos
+
 Este programa es software libre: puede redistribuirlo y/o modificarlo bajo los
 términos de la Licencia Pública General de GNU publicada por la
 Free Software Foundation, ya sea la versión 3 de la Licencia
