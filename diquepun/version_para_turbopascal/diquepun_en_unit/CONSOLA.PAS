@@ -61,6 +61,21 @@ implementation
 
 procedure iniciar_consola;
           begin
+               new(oros_ptxt);
+               new(copas_ptxt);
+               new(espadas_ptxt);
+               new(bastos_ptxt);
+               new(uno_ptxt);
+               new(dos_ptxt);
+               new(tres_ptxt);
+               new(cuatro_ptxt);
+               new(cinco_ptxt);
+               new(seis_ptxt);
+               new(siete_ptxt);
+               new(sota_ptxt);
+               new(caballo_ptxt);
+               new(rey_ptxt);
+          
                oros_ptxt^       :='oros    ';
                copas_ptxt^      :='copas   ';
                espadas_ptxt^    :='espadas ';
