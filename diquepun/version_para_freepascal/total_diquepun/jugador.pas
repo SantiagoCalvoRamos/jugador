@@ -88,7 +88,7 @@ var
 	k,i:integer;
 begin
         k:=0;
-        c:=' ';writeln('? ');
+        c:=' ';write('jugador>');
 	while (c=' ') do read(c);
 	k:=1;
 	while (c<>' ') and (k<=8) do
@@ -665,11 +665,23 @@ procedure listar_cartas_recogidas;
 					ultimo:=ultimo^.siguiente;
 				end;
                                 if ultimo^.elvalor <> sota
-                                then writeln('tengo el ',ultimo^.elvalor,' de ',palo)
-                                else writeln('tengo la ',ultimo^.elvalor,' de ',palo);
+                                then 
+                                	begin 
+                                		writeln('');
+                                		write('tengo el ',ultimo^.elvalor,' de ',palo);
+                                	end
+                                else
+                                	begin
+                                		writeln('');
+                                		write('tengo la ',ultimo^.elvalor,' de ',palo);
+                                	end;
 
 			end
-		        else writeln('no tengo de ',palo);//No hay cartas de ese palo
+		        else
+		        	begin
+		        		writeln('');
+		        		write('no tengo de ',palo);//No hay cartas de ese palo
+		        		end;
 		end;
 	end;
 
@@ -701,8 +713,8 @@ procedure almacenar_carta_echada(var palo:palos;var valor:valores;var trol:boole
 				ultimo_de_cartas_echadas^.aotro:=nil;
 			end;
 		 if valor <> sota
-                 then writeln('echo el ',valor,' de ',palo)
-                 else writeln('echo la ',valor,' de ',palo);
+                 then begin writeln(''); write('echo el ',valor,' de ',palo); end
+                 else begin writeln(''); write('echo la ',valor,' de ',palo); end;
         end;
 
 function vacio:boolean;
