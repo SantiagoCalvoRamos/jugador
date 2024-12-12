@@ -99,6 +99,7 @@ begin
 		end;
 	if k<9
 	then for i:=k to 8 do entrada[i]:=' ';
+	if eof then entrada:='acabar  ';
 end;
 
 //Texto del encabezado en el menu principal
@@ -258,12 +259,12 @@ procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
 				writeln('Has escogido mi habilidad para recordar');
 				writeln('las cartas que han sido jugadas');
 				writeln('y aqui las listo en el orden');
-                                writeln('en que han sido jugadas');
-				writeln();
+                                write('en que han sido jugadas');
+				//writeln();
 			end;
 		if valor <> sota
-		then writeln('el ',valor,' de ',palo)
-		else writeln('la ',valor,' de ',palo);
+		then begin writeln(''); write('el ',valor,' de ',palo) end
+		else begin writeln(''); write('la ',valor,' de ',palo); end;
 	end;
 
 //Pesentar el texto 'no hay cartas' o 'no hay mas cartas'
@@ -273,10 +274,11 @@ procedure no_hay_o_no_hay_mas(var siaquello:aquello);
 		case siaquello of
 		no_hay:
 			begin
-				writeln(chr(27),chr(35),chr(51),'no hay cartas');
+				//writeln(''); write(chr(27),chr(35),chr(51),'no hay cartas');
 				//writeln(chr(27),chr(35),chr(52),'no hay cartas');
+				writeln('');write('no hay cartas');
 			end;
-		no_hay_mas: writeln('no hay mas cartas');
+		no_hay_mas: begin writeln('');write('no hay mas cartas'); end;
 		end;
 	end;
 
@@ -415,8 +417,6 @@ procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:bool
                                                                 vacio:=false;
                                                         end
                                                  else no_hay_o_no_hay_mas(aquel);//writeln('no hay de ese palo');
-
-
                                         end;
                                 //writeln('falta el codigo para eliminar la carta');
 			end;
@@ -481,8 +481,7 @@ procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:bool
                                                                 palo:= bastos;
                                                                 vacio:=false;
                                                         end
-                                                 else no_hay_o_no_hay_mas(aquel);//writeln('no hay de ese palo');
-
+                                                 else begin no_hay_o_no_hay_mas(aquel); end;//writeln('no hay de ese palo');
                                         end;
                                 //writeln('falta el codigo para eliminar la carta');
 			end;
@@ -681,7 +680,7 @@ procedure listar_cartas_recogidas;
 		        	begin
 		        		writeln('');
 		        		write('no tengo de ',palo);//No hay cartas de ese palo
-		        		end;
+		        	end;
 		end;
 	end;
 
