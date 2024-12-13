@@ -42,12 +42,24 @@ var
     	valor:valores;
     	vuelta:boolean;
     	opcion:opcions;
+    	
 	asociado:file of carta;
 	echadas:file of carta;
+	
 	elpalo:palos;
 	elvalor:valores;
 	replica:carta;
-   	prioros,pricopas,priespadas,pribastos,nuevo,ultioros,ulticopas,ultiespadas,ultibastos:tipopuntero;
+	
+   	prioros,
+   	pricopas,
+   	priespadas,
+   	pribastos,
+   	nuevo,
+   	ultioros,
+   	ulticopas,
+   	ultiespadas,
+   	ultibastos:tipopuntero;
+   	
 	supalo:palos;
 	suvalor:valores;
 	aquel:aquello;
@@ -127,7 +139,7 @@ begin
 	if nombre='6       ' then begin error3:=false;valor:=seis end;
 	if nombre='7       ' then begin error3:=false;valor:=siete end;
 	if nombre='sota    ' then begin error3:=false;valor:=sota end;
-	if nombre='caballo ' then begin error3:=false;valor:=sota end;
+	if nombre='caballo ' then begin error3:=false;valor:=caballo end;
 	if nombre='rey     ' then begin error3:=false;valor:=rey end;
 	if error3=true then
                            begin
@@ -225,7 +237,7 @@ procedure nohaycartas(var siaquello:aquello);
 		nohay:
 			begin
 				writeln(chr(27),chr(35),chr(51),'no hay cartas');
-				writeln(chr(27),chr(35),chr(52),'no hay cartas');
+				{writeln(chr(27),chr(35),chr(52),'no hay cartas');}
 			end;
 		nohaymas: writeln('no hay mas cartas');
 		end;
@@ -274,14 +286,15 @@ var
 begin
 	echardelpalo(palo);
 	vacio:=vacio1(palo);
-	if vacio=false
+	//if vacio=false
+	if not vacio
 	then
 		for cursor:=el_as to rey do
                         if cartas_recogidas[palo,cursor]=true
 			then
 				valor:=cursor;
         cartas_recogidas[palo,valor]:=false;
-        cartas_echadas[palo,valor]:=true;
+        {cartas_echadas[palo,valor]:=true;}
 end;
 
 procedure recogercarta(var palo:palos;var valor:valores);
