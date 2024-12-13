@@ -10,3 +10,5 @@
 lib/
 backup/
 jugador
+*.TPU
+*.BAK
