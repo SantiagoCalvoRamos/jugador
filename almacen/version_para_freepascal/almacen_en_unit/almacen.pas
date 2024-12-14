@@ -73,8 +73,8 @@ procedure almacenar(var elpalo:palos;elvalor:valores);
 		replica.palo:=elpalo;
 		replica.valor:=elvalor;
 		if elvalor<>sota
-                then write('echo el ',elvalor, 'de ',elpalo)
-                else write('echo la',elvalor,' de ',elpalo);
+                then writeln('echo el ',elvalor,' de ',elpalo)
+                else writeln('echo la ',elvalor,' de ',elpalo);
 		write(echadas,replica);
 	end;
 
