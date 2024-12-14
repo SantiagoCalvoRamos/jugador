@@ -2,7 +2,7 @@
 
 Este código fue escrito originalmente para se compilado y ejecutado
 en el ordenador VAX-VMS de la Escuela Uinversitaria de Ingeniería
-Ténica de Telecomunición (EUITT) de la Universid Politécnica de
+Ténica de Telecomunicación (EUITT) de la Universid Politécnica de
 Madrid (UPM) durante el primer quinquenio de la década de los ochentas.
 
 El código consiste en manejar una baraja española y guardar en la mano
