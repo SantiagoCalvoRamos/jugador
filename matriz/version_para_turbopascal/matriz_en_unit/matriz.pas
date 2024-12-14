@@ -19,6 +19,12 @@ unit matriz;
 interface
 uses consola;
 
+{
+type
+	palos=(oros,copas,espadas,bastos);
+	valores=(as,dos,tres,cuatro,cinco,seis,siete,sota,caballo,rey);
+	aquello=(nohay,nohaymas);
+}
 
 var
 	esto:array[oros..bastos,uno..rey] of boolean;
@@ -96,6 +102,7 @@ end;
 
 procedure cartasechadas;
 	begin
+                writeln('caracteristica no implementada');
 	end;
 
 procedure recogercarta(var palo:palos;var valor:valores);
@@ -106,6 +113,7 @@ procedure recogercarta(var palo:palos;var valor:valores);
 
 procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
 	begin
+                writeln('caracteristica no implementada');
 	end;
 
 procedure listarcartas;
