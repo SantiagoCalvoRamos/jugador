@@ -183,6 +183,19 @@ function palo_a_txt(var palo:palos):p;
               end;
          end;
 
+procedure verlicencia;
+	begin
+        writeln('');
+        writeln('');
+	writeln('jugador Copyright (C) 2024 Santiago Calvo Ramos');
+	writeln('Este programa NO TIENE NINGUNA GARANTIA');
+        writeln('para obtener mas detalles, escriba show w');
+	writeln('Este es un software libre y puede redistribuirlo');
+	writeln('bajo ciertas condiciones; escriba show c para obtener mas detalles.');
+        writeln('');
+        writeln('');
+        end;
+
 
 procedure leerteclado(var entrada:paquete);
 var
@@ -818,6 +831,7 @@ begin
       iniciar_consola;
       iniciar;
       vaciar;
+      verlicencia;
       repeat
           palo:=copas;
 	  valor:=rey;
