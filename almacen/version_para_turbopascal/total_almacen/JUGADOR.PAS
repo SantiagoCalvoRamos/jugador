@@ -248,7 +248,7 @@ begin
 	if nombre='6       ' then begin error3:=false;valor:=seis end;
 	if nombre='7       ' then begin error3:=false;valor:=siete end;
 	if nombre='sota    ' then begin error3:=false;valor:=sota end;
-	if nombre='caballo ' then begin error3:=false;valor:=sota end;
+	if nombre='caballo ' then begin error3:=false;valor:=caballo end;
 	if nombre='rey     ' then begin error3:=false;valor:=rey end;
 	if error3=true then write('funcion incorrecta');
 end;
@@ -397,41 +397,157 @@ begin
 	else vacio1:=false;
 end;
 
-
+{
+//Preguntar al usuario de que palo se ha de echar
+//la carta comprobando si de ese palo hay cartas
+//en el almacenamiento de cartas recogidas
+//procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
+}
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
+
 	var
-		nuevos,ultimo,primero:tipopuntero;
+                a_borrar,
+		ultimo,
+		primero:tipopuntero;
+                aquel:aquello;
 	begin
-		echardelpalo(palo);
+                aquel:=nohay;
+                echardelpalo(palo);
 		case palo of
 		oros:
 			begin
-				nuevos:=nuevo;
-				ultimo:=ultioros;
-				primero:=prioros;
+                                ultimo:=ultioros;
+                                primero:=prioros;
+                                if ultimo <> primero
+                                then
+                                        begin
+                                                a_borrar:=primero;
+                                                prioros:=primero^.anterior;
+                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
+                                                valor:=primero^.elvalor;
+                                                palo:=oros;
+                                                vacio:=false;
+                                                dispose(a_borrar);
+                                        end
+                                else
+                                        begin
+                                                a_borrar:=primero;
+                                                if primero <> nil
+                                                 then
+                                                        begin
+                                                                valor:=primero^.elvalor;
+                                                                dispose(primero);
+                                                                ultioros:=nil;
+                                                                prioros:=nil;
+                                                                palo:= oros;
+                                                                vacio:=false;
+                                                        end
+                                                 else nohaycartas(aquel); {//writeln('no hay de ese palo');}
+                                        end;
+                                {//writeln('falta el codigo para eliminar la carta');}
 			end;
 		copas:
 			begin
-				nuevos:=nuevo;
-				ultimo:=ulticopas;
-				primero:=pricopas;
+                                ultimo:=ulticopas;
+                                primero:=pricopas;
+                                if ultimo <> primero
+                                then
+                                        begin
+                                                a_borrar:=primero;
+                                                pricopas:=primero^.anterior;
+                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
+                                                valor:=primero^.elvalor;
+                                                palo:=copas;
+                                                vacio:=false;
+                                                dispose(a_borrar);
+                                        end
+                                else
+                                        begin
+                                                a_borrar:=primero;
+                                                if primero <> nil
+                                                 then
+                                                        begin
+                                                                valor:=primero^.elvalor;
+                                                                dispose(primero);
+                                                                ulticopas:=nil;
+                                                                pricopas:=nil;
+                                                                palo:= copas;
+                                                                vacio:=false;
+                                                        end
+                                                 else nohaycartas(aquel);{//writeln('no hay de ese palo');}
+
+
+                                        end;
+                                {//writeln('falta el codigo para eliminar la carta');}
 			end;
 		espadas:
 			begin
-				nuevos:=nuevo;
-				ultimo:=ultiespadas;
-				primero:=priespadas;
+                                ultimo:=ultiespadas;
+                                primero:=priespadas;
+                                if ultimo <> primero
+                                then
+                                        begin
+                                                a_borrar:=primero;
+                                                priespadas:=primero^.anterior;
+                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
+                                                valor:=primero^.elvalor;
+                                                palo:=espadas;
+                                                vacio:=false;
+                                                dispose(a_borrar)
+                                        end
+                                else
+                                        begin
+                                                a_borrar:=primero;
+                                                if primero <> nil
+                                                 then
+                                                        begin
+                                                                valor:=primero^.elvalor;
+                                                                dispose(primero);
+                                                                ultiespadas:=nil;
+                                                                priespadas:=nil;
+                                                                palo:=espadas;
+                                                                vacio:=false;
+                                                        end
+                                                 else nohaycartas(aquel);{//writeln('no hay de ese palo');}
+
+                                        end;
+                                {//writeln('falta el codigo para eliminar la carta');}
 			end;
 		bastos:
 			begin
-				nuevos:=nuevo;
-				ultimo:=ultibastos;
-				primero:=pribastos;
+                                ultimo:=ultibastos;
+                                primero:=pribastos;
+                                if ultimo <> primero
+                                then
+                                        begin
+                                                a_borrar:=primero;
+                                                pribastos:=primero^.anterior;
+                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
+                                                valor:=primero^.elvalor;
+                                                palo:=bastos;
+                                                vacio:=false;
+                                                dispose(a_borrar)
+                                        end
+                                else
+                                        begin
+                                                a_borrar:=primero;
+                                                if primero <> nil
+                                                 then
+                                                        begin
+                                                                valor:=primero^.elvalor;
+                                                                dispose(primero);
+                                                                ultibastos:=nil;
+                                                                pribastos:=nil;
+                                                                palo:= bastos;
+                                                                vacio:=false;
+                                                        end
+                                                 else nohaycartas(aquel);{//writeln('no hay de ese palo');}
+
+                                        end;
+                                {//writeln('falta el codigo para eliminar la carta');}
 			end;
 		end;
-                vacio:=false;
 	end;
-
 
 procedure ordenar(palo:palos);
 var
@@ -622,9 +738,9 @@ procedure almacenar(var elpalo:palos;elvalor:valores);
 		replica.valor:=elvalor;
 		if elvalor<>sota
 		then
-			write('echo el ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^)
+			writeln('echo el ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^)
                 else
-                	write('echo la',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^);
+                	writeln('echo la',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^);
 		write(echadas,replica);
 	end;
 
