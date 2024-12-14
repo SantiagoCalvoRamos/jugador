@@ -421,22 +421,9 @@ procedure listarcartas;
 		                begin
 			                while primero <> ultimo do
 			                begin
-				                if ultimo^.elvalor <> sota
-				                then
-				                	begin
-				                		writeln('tengo el ');
-				                		write(valor_a_txt(ultimo^.elvalor)^);
-				                		write(' de ');
-				                		write(palo_a_txt(palo)^);
-				                	end
-				                else
-                                                        begin
-				                		writeln('tengo la ');
-				                		write(valor_a_txt(ultimo^.elvalor)^);
-				                		write(' de ');
-				                		write(palo_a_txt(palo)^);
-				                	end;
-
+                                                if ultimo^.elvalor <> sota
+			                        then writeln('tengo el ',valor_a_txt(ultimo^.elvalor)^,' de ',palo_a_txt(palo)^)
+			                        else writeln('tengo la ',valor_a_txt(ultimo^.elvalor)^,' de ',palo_a_txt(palo)^);
 				                ultimo:=ultimo^.siguiente;
 			                end;
 			                if ultimo^.elvalor <> sota
