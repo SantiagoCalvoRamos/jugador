@@ -77,9 +77,12 @@ procedure almacenar(var elpalo:palos;elvalor:valores;vuelta:boolean);
 		replica.valor:=elvalor;
 		valores_a_texto(elvalor,valor_txt);
                 palos_a_texto(elpalo,palo_txt);
+                escribir_el_o_la(elpalo,elvalor);
+                {
 		if elvalor<>sota
-                then write('echo el ',valor_txt, 'de ',palo_txt)
-                else write('echo la ',valor_txt,' de ',palo_txt);
+                then writeln('echo el ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^)
+                else writeln('echo la ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^);
+                }
 		write(echadas,replica);
 	end;
 

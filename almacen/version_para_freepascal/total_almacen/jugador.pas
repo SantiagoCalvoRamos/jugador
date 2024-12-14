@@ -14,7 +14,7 @@ Pública General de GNU para obtener más detalles.
 Debería haber recibido una copia de la Licencia Pública General de
 GNU junto con este programa. Si no es así, consulte <https://www.gnu.org/licenses/>.
 }
-program total(output,echadas,asociado);
+program jugador(output,echadas,asociado);
 
 
 type
