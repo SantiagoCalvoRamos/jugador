@@ -56,6 +56,7 @@ procedure verlicencia;
 procedure iniciar_consola;
 function valor_a_txt(var valor:valores):p;
 function palo_a_txt(var palo:palos):p;
+procedure escribir_el_o_la(var elpalo:palos;var elvalor:valores);
 
 implementation
 
@@ -289,5 +290,13 @@ procedure nohaycartas(var aquel:aquello);
 		nohaymas: writeln('no hay mas cartas');
 		end;
 	end;
+
+procedure escribir_el_o_la(var elpalo:palos;var elvalor:valores);
+          begin
+               if elvalor<>sota
+                then writeln('echo el ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^)
+                else writeln('echo la ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^);
+          end;
+
 end.
 

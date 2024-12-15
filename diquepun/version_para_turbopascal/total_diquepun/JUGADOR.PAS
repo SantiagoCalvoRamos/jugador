@@ -15,7 +15,7 @@ Debería haber recibido una copia de la Licencia Pública General de
 GNU junto con este programa. Si no es así, consulte <https://www.gnu.org/licenses/>.
 }
 
-program total;
+program jugador;
 uses
 	crt;
 
@@ -37,7 +37,7 @@ type
 		losvalores:valores;
 		aotro:cartas;
 	       end;
-
+	p=^paquete;
 
 var
 	palo:palos;
@@ -60,7 +60,21 @@ var
 
 	raiz_de_cartas_echadas:cartas;
 	ultimo_de_cartas_echadas:cartas;
-
+        oros_ptxt,
+        copas_ptxt,
+        espadas_ptxt,
+        bastos_ptxt,
+        uno_ptxt,
+        dos_ptxt,
+        tres_ptxt,
+        cuatro_ptxt,
+        cinco_ptxt,
+        seis_ptxt,
+        siete_ptxt,
+        sota_ptxt,
+        caballo_ptxt,
+        rey_ptxt:p;
+        oros_str,copas_str,espadas_str,bastos_str:paquete;
 
 procedure verlicencia;
 	begin
@@ -74,6 +88,76 @@ procedure verlicencia;
         writeln('');
         writeln('');
         end;
+
+procedure iniciar_consola;
+          begin
+               new(oros_ptxt);
+               new(copas_ptxt);
+               new(espadas_ptxt);
+               new(bastos_ptxt);
+               new(uno_ptxt);
+               new(dos_ptxt);
+               new(tres_ptxt);
+               new(cuatro_ptxt);
+               new(cinco_ptxt);
+               new(seis_ptxt);
+               new(siete_ptxt);
+               new(sota_ptxt);
+               new(caballo_ptxt);
+               new(rey_ptxt);
+          
+               oros_ptxt^       :='oros    ';
+               copas_ptxt^      :='copas   ';
+               espadas_ptxt^    :='espadas ';
+               bastos_ptxt^     :='bastos  ';
+               uno_ptxt^        :='uno     ';
+               dos_ptxt^        :='dos     ';
+               tres_ptxt^       :='tres    ';
+               cuatro_ptxt^     :='cuatro  ';
+               cinco_ptxt^      :='cinco   ';
+               seis_ptxt^       :='seis    ';
+               siete_ptxt^      :='siete   ';
+               sota_ptxt^       :='sota    ';
+               caballo_ptxt^    :='caballo ';
+               rey_ptxt^        :='rey     ';
+          end;
+
+
+
+function valor_a_txt(var valor:valores):p;
+         begin
+              case valor of
+                   uno:         begin valor_a_txt:=uno_ptxt; end;
+                   dos:         begin valor_a_txt:=dos_ptxt; end;
+                   tres:        begin valor_a_txt:=tres_ptxt;end;
+                   cuatro:      begin valor_a_txt:=cuatro_ptxt;end;
+                   cinco:       begin valor_a_txt:=cinco_ptxt;end;
+                   seis:        begin valor_a_txt:=seis_ptxt;end;
+                   siete:       begin valor_a_txt:=siete_ptxt;end;
+                   sota:        begin valor_a_txt:=sota_ptxt;end;
+                   caballo:     begin valor_a_txt:=caballo_ptxt;end;
+                   rey:         begin valor_a_txt:=rey_ptxt;end;
+              end;
+         end;
+
+function palo_a_txt(var palo:palos):p;
+         begin
+              case palo of
+                   oros:     begin palo_a_txt:=oros_ptxt;end;
+                   copas:    begin palo_a_txt:=copas_ptxt;end;
+                   espadas:  begin palo_a_txt:=espadas_ptxt;end;
+                   bastos:   begin palo_a_txt:=bastos_ptxt;end;
+              end;
+         end;
+
+
+procedure escribir_el_o_la(var elpalo:palos;var elvalor:valores);
+          begin
+               if elvalor<>sota
+                then writeln('echo el ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^)
+                else writeln('echo la ',valor_a_txt(elvalor)^,' de ',palo_a_txt(elpalo)^);
+          end;
+
 {Leer de la entrada hasta ocho caracteres}
 procedure leerteclado(var entrada:paquete);
 var
@@ -751,9 +835,10 @@ procedure almacenar_carta_echada(var palo:palos;var valor:valores;var trol:boole
 				ultimo_de_cartas_echadas:=nuevo;
 				ultimo_de_cartas_echadas^.aotro:=nil;
 			end;
-		 if valor <> sota
+		 {if valor <> sota
                  then writeln('echo el ',elvalor_txt,' de ',elpalo_txt)
-                 else writeln('echo la ',elvalor_txt,' de ',elpalo_txt);
+                 else writeln('echo la ',elvalor_txt,' de ',elpalo_txt);}
+                 escribir_el_o_la(palo,valor);
         end;
 
 function vacio:boolean;
@@ -829,6 +914,7 @@ end;
 procedure inicializacion;
 	begin
 	      	verlicencia;
+                iniciar_consola;
 	      	inicializar_almacenamiento_de_cartas_recogidas; {//Inicializar el almacenamiento de cartas recogidas}
       		inicializar_almacenamiento_de_cartas_echadas;   {//Inicializar el almacenamiento de cartas echadas}
 	end;
