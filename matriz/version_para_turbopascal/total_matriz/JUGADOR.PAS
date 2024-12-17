@@ -37,7 +37,7 @@ type
 		losvalores:valores;
 		aotro:cartas;
 	       end;
-
+	p=^paquete;
 
 var
 	palo:palos;
@@ -61,6 +61,74 @@ var
 	raiz_de_cartas_echadas:cartas;
 	ultimo_de_cartas_echadas:cartas;
 
+        oros_ptxt,
+        copas_ptxt,
+        espadas_ptxt,
+        bastos_ptxt,
+        uno_ptxt,
+        dos_ptxt,
+        tres_ptxt,
+        cuatro_ptxt,
+        cinco_ptxt,
+        seis_ptxt,
+        siete_ptxt,
+        sota_ptxt,
+        caballo_ptxt,
+        rey_ptxt:p;
+        oros_str,copas_str,espadas_str,bastos_str:paquete;
+
+	matriz_cartas_recogidas : array[oros..bastos] of array[uno..rey] of boolean;
+	matriz_cartas_echadas : array[oros..bastos] of array[uno..rey] of boolean;
+
+procedure iniciar_matriz_cartas_recogidas;
+	var
+		palo  : palos;
+		valor : valores;
+	begin
+		for palo := oros to bastos do for valor := uno to rey do matriz_cartas_recogidas[palo,valor]:=false;
+	end;
+	
+procedure iniciar_matriz_cartas_echadas;
+	var
+		palo  : palos;
+		valor : valores;
+	begin
+		for palo := oros to bastos do for valor := uno to rey do matriz_cartas_echadas[palo,valor]:=false;
+	end;
+
+procedure iniciar_consola;
+          begin
+               new(oros_ptxt);
+               new(copas_ptxt);
+               new(espadas_ptxt);
+               new(bastos_ptxt);
+               new(uno_ptxt);
+               new(dos_ptxt);
+               new(tres_ptxt);
+               new(cuatro_ptxt);
+               new(cinco_ptxt);
+               new(seis_ptxt);
+               new(siete_ptxt);
+               new(sota_ptxt);
+               new(caballo_ptxt);
+               new(rey_ptxt);
+
+               oros_ptxt^       :='oros    ';
+               copas_ptxt^      :='copas   ';
+               espadas_ptxt^    :='espadas ';
+               bastos_ptxt^     :='bastos  ';
+               uno_ptxt^        :='uno     ';
+               dos_ptxt^        :='dos     ';
+               tres_ptxt^       :='tres    ';
+               cuatro_ptxt^     :='cuatro  ';
+               cinco_ptxt^      :='cinco   ';
+               seis_ptxt^       :='seis    ';
+               siete_ptxt^      :='siete   ';
+               sota_ptxt^       :='sota    ';
+               caballo_ptxt^    :='caballo ';
+               rey_ptxt^        :='rey     ';
+          end;
+
 
 procedure verlicencia;
 	begin
@@ -82,7 +150,7 @@ var
 begin
         k:=0;
         c:=' ';writeln('? ');
-	while (c=' ') do read(c);
+	while (c=' ') or  (c=chr(13)) or (c=chr(10)) do read(c);
 	k:=1;
 	while (c<>' ') and (k<=8) do
 		begin
@@ -219,7 +287,7 @@ begin
 end;
 
 {//Pedir al usuario una carta, indicando este su palo y su valor}
-procedure dime_una_carta(var palo4:palos;var valor2:valores);
+procedure dime_una_carta(var palo:palos;var valor:valores);
 	var
 		mediador:paquete;
 		error:boolean;
@@ -231,16 +299,16 @@ procedure dime_una_carta(var palo4:palos;var valor2:valores);
 		while error do
 			begin
 				leerteclado(mediador);
-				chequeo_menu_echar_palo(error,palote,mediador);
-				palo4:=palote;
+				chequeo_menu_echar_palo(error,palo,mediador);
+				{palo:=palote;}
 				{//writeln('oros copas espadas o bastos');}
 			end;
 		error:=true;
 		while error do
 			begin
 				leerteclado(mediador);
-                                chequeo_valor_carta(error,valote,mediador);
-				valor2:=valote;
+                                chequeo_valor_carta(error,valor,mediador);
+				{valor:=valote;}
 				{//writeln('as 2 3 4 5 6 7 sota caballo o rey');}
 			end;
 	end;
@@ -303,8 +371,9 @@ procedure no_hay_o_no_hay_mas(var siaquello:aquello);
 		case siaquello of
 		no_hay:
 			begin
-				writeln(chr(27),chr(35),chr(51),'no hay cartas');
+				{writeln(chr(27),chr(35),chr(51),'no hay cartas');}
 				{//writeln(chr(27),chr(35),chr(52),'no hay cartas');}
+                                writeln('no hay cartas');
 			end;
 		no_hay_mas: writeln('no hay mas cartas');
 		end;
@@ -326,398 +395,66 @@ procedure inicializar_almacenamiento_de_cartas_recogidas;
 		nuevo:=nil;
 	end;
 
-{
-//Comprobar si en el almacenamiento de cartas recogidas
-//hay elementos del palo indicado en el parametro
-}
-function ver_si_vacio_el_palo_en_almacenamiento_de_cartas_recogidas(palo:palos;valor:valores):boolean;
-var
-	{//nuevos,}
-	ultimo,
-	primero:tipopuntero;
-	aquel:aquello;
-begin
-	case palo of
-	oros:
-		begin
 
-			ultimo:=cartas_recogidas_ultioros;
-			primero:=cartas_recogidas_prioros;
-		end;
-	copas:
-		begin
-
-			ultimo:=cartas_recogidas_ulticopas;
-			primero:=cartas_recogidas_pricopas;
-		end;
-	espadas:
-		begin
-
-			ultimo:=cartas_recogidas_ultiespadas;
-			primero:=cartas_recogidas_priespadas;
-		end;
-	bastos:
-		begin
-
-			ultimo:=cartas_recogidas_ultibastos;
-			primero:=cartas_recogidas_pribastos;
-		end;
-	end;
-	if primero=nil  {//No hay cartas}
-	then
-		begin
-			aquel:=no_hay;
-			{//Presentar el mensaje de que no hay cartas}
-			no_hay_o_no_hay_mas(aquel);
-			ver_si_vacio_el_palo_en_almacenamiento_de_cartas_recogidas:=true;
-		end
-	else ver_si_vacio_el_palo_en_almacenamiento_de_cartas_recogidas:=false;
-end;
-
-{
-//Preguntar al usuario de que palo se ha de echar
-//la carta comprobando si de ese palo hay cartas
-//en el almacenamiento de cartas recogidas
-}
 procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
-	var
-                a_borrar,
-                anterior,
-		ultimo,
-		primero:tipopuntero;
+        var
+                i_valor:valores;
                 aquel:aquello;
+                encontrado:boolean;
 	begin
+                encontrado:=false;
                 aquel:=no_hay;
                 preguntar_de_que_palo_echar(palo);
-		case palo of
-		oros:
-			begin
-                                ultimo:=cartas_recogidas_ultioros;
-                                primero:=cartas_recogidas_prioros;
-                                if ultimo <> primero
-                                then
-                                        begin
-                                                a_borrar:=primero;
-                                                cartas_recogidas_prioros:=primero^.anterior;
-                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
-                                                valor:=primero^.elvalor;
-                                                palo:=oros;
-                                                vacio:=false;
-                                                dispose(a_borrar);
-                                        end
-                                else
-                                        begin
-                                                a_borrar:=primero;
-                                                if primero <> nil
-                                                 then
-                                                        begin
-                                                                valor:=primero^.elvalor;
-                                                                dispose(primero);
-                                                                cartas_recogidas_ultioros:=nil;
-                                                                cartas_recogidas_prioros:=nil;
-                                                                palo:= oros;
-                                                                vacio:=false;
-                                                        end
-                                                 else no_hay_o_no_hay_mas(aquel); {//writeln('no hay de ese palo');}
-                                        end;
-                                {//writeln('falta el codigo para eliminar la carta');}
-			end;
-		copas:
-			begin
-                                ultimo:=cartas_recogidas_ulticopas;
-                                primero:=cartas_recogidas_pricopas;
-                                if ultimo <> primero
-                                then
-                                        begin
-                                                a_borrar:=primero;
-                                                cartas_recogidas_pricopas:=primero^.anterior;
-                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
-                                                valor:=primero^.elvalor;
-                                                palo:=copas;
-                                                vacio:=false;
-                                                dispose(a_borrar);
-                                        end
-                                else
-                                        begin
-                                                a_borrar:=primero;
-                                                if primero <> nil
-                                                 then
-                                                        begin
-                                                                valor:=primero^.elvalor;
-                                                                dispose(primero);
-                                                                cartas_recogidas_ulticopas:=nil;
-                                                                cartas_recogidas_pricopas:=nil;
-                                                                palo:= copas;
-                                                                vacio:=false;
-                                                        end
-                                                 else no_hay_o_no_hay_mas(aquel);{//writeln('no hay de ese palo');}
+                for i_valor:= uno to rey do
+                begin
+                     if matriz_cartas_recogidas[palo,i_valor] and not encontrado
+                     then
+                         begin
+                              valor:=i_valor;
+                              encontrado:=true;
+                              vacio:=false;
+                         end
+                end;
 
-
-                                        end;
-                                {//writeln('falta el codigo para eliminar la carta');}
-			end;
-		espadas:
-			begin
-                                ultimo:=cartas_recogidas_ultiespadas;
-                                primero:=cartas_recogidas_priespadas;
-                                if ultimo <> primero
-                                then
-                                        begin
-                                                a_borrar:=primero;
-                                                cartas_recogidas_priespadas:=primero^.anterior;
-                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
-                                                valor:=primero^.elvalor;
-                                                palo:=espadas;
-                                                vacio:=false;
-                                                dispose(a_borrar)
-                                        end
-                                else
-                                        begin
-                                                a_borrar:=primero;
-                                                if primero <> nil
-                                                 then
-                                                        begin
-                                                                valor:=primero^.elvalor;
-                                                                dispose(primero);
-                                                                cartas_recogidas_ultiespadas:=nil;
-                                                                cartas_recogidas_priespadas:=nil;
-                                                                palo:=espadas;
-                                                                vacio:=false;
-                                                        end
-                                                 else no_hay_o_no_hay_mas(aquel);{//writeln('no hay de ese palo');}
-
-                                        end;
-                                {//writeln('falta el codigo para eliminar la carta');}
-			end;
-		bastos:
-			begin
-                                ultimo:=cartas_recogidas_ultibastos;
-                                primero:=cartas_recogidas_pribastos;
-                                if ultimo <> primero
-                                then
-                                        begin
-                                                a_borrar:=primero;
-                                                cartas_recogidas_pribastos:=primero^.anterior;
-                                                if primero^.anterior <> nil then primero^.anterior^.siguiente:=nil;
-                                                valor:=primero^.elvalor;
-                                                palo:=bastos;
-                                                vacio:=false;
-                                                dispose(a_borrar)
-                                        end
-                                else
-                                        begin
-                                                a_borrar:=primero;
-                                                if primero <> nil
-                                                 then
-                                                        begin
-                                                                valor:=primero^.elvalor;
-                                                                dispose(primero);
-                                                                cartas_recogidas_ultibastos:=nil;
-                                                                cartas_recogidas_pribastos:=nil;
-                                                                palo:= bastos;
-                                                                vacio:=false;
-                                                        end
-                                                 else no_hay_o_no_hay_mas(aquel);{//writeln('no hay de ese palo');}
-
-                                        end;
-                                {//writeln('falta el codigo para eliminar la carta');}
-			end;
-		end;
 	end;
-
-
-procedure ordenar_las_de_un_palo(palo:palos);
-var
-	{//nuevos,}
-	primero,
-	ultimo:tipopuntero;
-	x:valores;
-begin
-	case palo of
-	oros:
-		begin
-
-			ultimo:=cartas_recogidas_ultioros;
-			primero:=cartas_recogidas_prioros;
-		end;
-	copas:
-		begin
-
-			ultimo:=cartas_recogidas_ulticopas;
-			primero:=cartas_recogidas_pricopas;
-		end;
-	espadas:
-		begin
-     ;
-			ultimo:=cartas_recogidas_ultiespadas;
-			primero:=cartas_recogidas_priespadas;
-		end;
-	bastos:
-		begin
-
-			ultimo:=cartas_recogidas_ultibastos;
-			primero:=cartas_recogidas_pribastos;
-		end;
-	end;
-	while primero <> ultimo do
-	begin
-		if ultimo^.elvalor < ultimo^.siguiente^.elvalor
-		then ultimo:=ultimo^.siguiente
-		else
-			begin
-				x:=ultimo^.elvalor;
-				ultimo^.elvalor:=ultimo^.siguiente^.elvalor;
-				ultimo^.siguiente^.elvalor:=x;
-				ultimo:=ultimo^.siguiente;
-			end;
-	end;
-end;
-
 
 {
 //Pedir una carta al usuario y guardarla en el
 //lugar de cartas recogidas
 }
 procedure recoger_carta_y_guardarla(var palo:palos;var valor:valores);
-var
-	nuevos,ultimo,primero:tipopuntero;
-begin
-	dime_una_carta(palo,valor);
-	case palo of
-	oros:
-		begin
-			nuevos:=nuevo;
-			ultimo:=cartas_recogidas_ultioros;
-			primero:=cartas_recogidas_prioros;
-		end;
-	copas:
-		begin
-			nuevos:=nuevo;
-			ultimo:=cartas_recogidas_ulticopas;
-			primero:=cartas_recogidas_pricopas;
-		end;
-	espadas:
-		begin
-			nuevos:=nuevo;
-			ultimo:=cartas_recogidas_ultiespadas;
-			primero:=cartas_recogidas_priespadas;
-		end;
-	bastos:
-		begin
-			nuevos:=nuevo;
-			ultimo:=cartas_recogidas_ultibastos;
-			primero:=cartas_recogidas_pribastos;
-		end;
-	end;
-	new(nuevos);
-	nuevos^.elvalor:=valor;
-	if ultimo <> nil
-	then
-		begin
-			nuevos^.anterior:=nil;
-			nuevos^.siguiente:=ultimo;
-			ultimo^.anterior:=nuevos;
-			ultimo:=nuevos;
-		end
-	else
-		begin
-			ultimo:=nuevos;
-			ultimo^.anterior:=nil;
-			ultimo^.siguiente:=nil;
-			primero:=ultimo;
-		end;
-	case palo of
-	oros:
-		begin
-			nuevo:=nuevos;
-			cartas_recogidas_ultioros:=ultimo;
-			cartas_recogidas_prioros:=primero;
-		end;
-	copas:
-		begin
-			nuevo:=nuevos;
-			cartas_recogidas_ulticopas:=ultimo;
-			cartas_recogidas_pricopas:=primero;
-		end;
-	espadas:
-		begin
-			nuevo:=nuevos;
-			cartas_recogidas_ultiespadas:=ultimo;
-			cartas_recogidas_priespadas:=primero;
-		end;
-	bastos:
-		begin
-			nuevo:=nuevos;
-			cartas_recogidas_ultibastos:=ultimo;
-			cartas_recogidas_pribastos:=primero;
-		end;
-	end;
-	ordenar_las_de_un_palo(palo);
-end;
+          begin
+               dime_una_carta(palo,valor);
+               matriz_cartas_recogidas[palo,valor]:=true;
+          end;
+
 
 {
 //Listar las cartas que han sido recogidas
 }
 procedure listar_cartas_recogidas;
-	var
-		palo:palos;
-                elvalor_txt:paquete;
-                elpalo_txt:paquete;
-		primero,ultimo:tipopuntero;
+          var
+             i_palo,i_palo2:palos;
+             i_valor,i_valor2:valores;
+             palo_txt,valor_txt:paquete;
+          begin
+               for i_palo:= oros to bastos do
+                   for i_valor:= uno to rey do
+                       begin
+                            if matriz_cartas_recogidas[i_palo,i_valor]=true
+                            then
+                                begin
+                                     i_valor2:=i_valor;
+                                     i_palo2:=i_palo;
+                                     valores_a_texto(i_valor2,valor_txt);
+                                     palos_a_texto(i_palo2,palo_txt);
+                                     if i_valor <> sota
+		                     then writeln('el ',valor_txt,' de ',palo_txt)
+		                     else writeln('la ',valor_txt,' de ',palo_txt);
+                                end;
+                       end;
+          end;
 
-	begin
-		for palo:=oros to bastos do  {//Por cada palo}
-		begin
-			case palo of
-			oros:
-				begin
-
-					ultimo:=cartas_recogidas_ultioros;
-					primero:=cartas_recogidas_prioros;
-				end;
-			copas:
-				begin
-
-					ultimo:=cartas_recogidas_ulticopas;
-					primero:=cartas_recogidas_pricopas;
-				end;
-			espadas:
-				begin
-
-					ultimo:=cartas_recogidas_ultiespadas;
-					primero:=cartas_recogidas_priespadas;
-				end;
-			bastos:
-				begin
-
-					ultimo:=cartas_recogidas_ultibastos;
-					primero:=cartas_recogidas_pribastos;
-				end;
-			end;
-
-                        valores_a_texto(ultimo^.elvalor,elvalor_txt);
-                        palos_a_texto(palo,elpalo_txt);
-		        if ultimo <> nil {//Si hay elementos en la lista}
-		        then
-			begin   {//Por cada valor listar la carta}
-				while primero <> ultimo do
-				begin
-
-                                        valores_a_texto(ultimo^.elvalor,elvalor_txt);
-                                        palos_a_texto(palo,elpalo_txt);
-					if ultimo^.elvalor <> sota
-					then writeln('tengo el ',elvalor_txt,' de ',elpalo_txt)
-					else writeln('tengo la ',elvalor_txt,' de ',elpalo_txt);
-					ultimo:=ultimo^.siguiente;
-				end;
-                                if ultimo^.elvalor <> sota
-                                then writeln('tengo el ',elvalor_txt,' de ',elpalo_txt)
-                                else writeln('tengo la ',elvalor_txt,' de ',elpalo_txt);
-
-			end
-		        else writeln('no tengo de ',elpalo_txt);{//No hay cartas de ese palo}
-		end;
-	end;
 
 procedure inicializar_almacenamiento_de_cartas_echadas;
 	begin
@@ -729,32 +466,19 @@ procedure inicializar_almacenamiento_de_cartas_echadas;
 //Guardar la carta echada
 }
 procedure almacenar_carta_echada(var palo:palos;var valor:valores;var trol:boolean);
-	var
+          var
 		nuevo:cartas;
                 elpalo_txt,elvalor_txt:paquete;
-	begin
-                valores_a_texto(valor,elvalor_txt);
-                palos_a_texto(palo,elpalo_txt);
-		new(nuevo);
-		nuevo^.lospalos:=palo;
-		nuevo^.losvalores:=valor;
-		if ultimo_de_cartas_echadas=nil
-		then
-			begin
-				raiz_de_cartas_echadas:=nuevo;
-				ultimo_de_cartas_echadas:=nuevo;
-				nuevo^.aotro:=nil;
-			end
-		else
-			begin
-				ultimo_de_cartas_echadas^.aotro:=nuevo;
-				ultimo_de_cartas_echadas:=nuevo;
-				ultimo_de_cartas_echadas^.aotro:=nil;
-			end;
-		 if valor <> sota
-                 then writeln('echo el ',elvalor_txt,' de ',elpalo_txt)
-                 else writeln('echo la ',elvalor_txt,' de ',elpalo_txt);
-        end;
+          begin
+               valores_a_texto(valor,elvalor_txt);
+               palos_a_texto(palo,elpalo_txt);
+               matriz_cartas_echadas[palo,valor]:=true;
+               matriz_cartas_recogidas[palo,valor]:=false;
+               if valor <> sota
+               then writeln('echo el ',elvalor_txt,' de ',elpalo_txt)
+               else writeln('echo la ',elvalor_txt,' de ',elpalo_txt);
+               trol:=false;
+          end;
 
 function vacio:boolean;
 var
@@ -775,31 +499,25 @@ end;
 //Listar las cartas echadas
 }
 procedure listar_cartas_echadas;
-	var
-		trol:boolean;
-		palo:palos;
-		valor:valores;
-		cursor:cartas;
-		aquel:aquello;
-	begin
-		if vacio=false
-		then
-			begin
-				trol:=true; {//Se ha de presentar el texto de que se listan}
-					    {//las cartas echadas.}
+          var
+             i_valor:valores;
+             i_palo:palos;
+             trol:boolean;
+          begin
+           for i_palo:= oros to bastos do
+               begin
+                   for i_valor:= uno to rey do
+                   begin
+                        if matriz_cartas_echadas[i_palo,i_valor]=true
+                        then
+                            begin
+                                 el_o_la(trol,i_palo,i_valor);
+                                 trol:=false;
+                            end;
+                   end;
+               end;
+          end;
 
-				cursor:=raiz_de_cartas_echadas;
-				repeat
-					palo:=cursor^.lospalos;
-					valor:=cursor^.losvalores;
-					el_o_la(trol,palo,valor);
-					trol:=false;
-					cursor:=cursor^.aotro;
-				until cursor=nil;
-				aquel:=no_hay_mas;
-				no_hay_o_no_hay_mas(aquel);
-			end;
-	end;
 
 procedure echar_una_carta(var palo:palos;var valor:valores;var vuelta:boolean);
  begin
@@ -829,8 +547,11 @@ end;
 procedure inicializacion;
 	begin
 	      	verlicencia;
+	      	iniciar_consola;
 	      	inicializar_almacenamiento_de_cartas_recogidas; {//Inicializar el almacenamiento de cartas recogidas}
       		inicializar_almacenamiento_de_cartas_echadas;   {//Inicializar el almacenamiento de cartas echadas}
+      		iniciar_matriz_cartas_recogidas;
+      		iniciar_matriz_cartas_echadas;
 	end;
 
 procedure bucle_del_programa;
