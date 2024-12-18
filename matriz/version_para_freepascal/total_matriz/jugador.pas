@@ -76,7 +76,7 @@ var
 begin
         k:=0;
         c:=' ';writeln('? ');
-	while (c=' ') do read(c);
+	while (c=' ') or (c=chr(13)) or (c=chr(10)) do read(c);
 	k:=1;
 	while (c<>' ') and (k<=8) do
 		begin
@@ -172,7 +172,7 @@ begin
                            end;
 end;
 
-procedure echardelpalo(var palo3:palos);
+procedure echardelpalo(var palo:palos);
 	var
 		mediador:paquete;
 		error:boolean;
@@ -182,7 +182,7 @@ procedure echardelpalo(var palo3:palos);
 		while error do  //Repetir hasta leer un palo correcto
 			begin
 				leerteclado(mediador);
-				chequeo_menu_echar_palo(error,palo3,mediador);
+				chequeo_menu_echar_palo(error,palo,mediador);
 			end;
 	end;
 
@@ -236,8 +236,9 @@ procedure nohaycartas(var siaquello:aquello);
 		case siaquello of
 		nohay:
 			begin
-				writeln(chr(27),chr(35),chr(51),'no hay cartas');
+				{writeln(chr(27),chr(35),chr(51),'no hay cartas');}
 				{writeln(chr(27),chr(35),chr(52),'no hay cartas');}
+				writeln('no hay cartas');
 			end;
 		nohaymas: writeln('no hay mas cartas');
 		end;
@@ -283,18 +284,25 @@ end;
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
 var
 	cursor:valores;
+	encontrado:boolean;
 begin
 	echardelpalo(palo);
 	vacio:=vacio1(palo);
 	//if vacio=false
 	if not vacio
 	then
+	begin	
+		encontrado:=false;
 		for cursor:=el_as to rey do
-                        if cartas_recogidas[palo,cursor]=true
+                        if cartas_recogidas[palo,cursor]=true and not encontrado
 			then
+			begin	
 				valor:=cursor;
-        cartas_recogidas[palo,valor]:=false;
-        {cartas_echadas[palo,valor]:=true;}
+        			cartas_recogidas[palo,valor]:=false;
+        			cartas_echadas[palo,valor]:=true;
+        			encontrado:=true;
+        		end;
+       end; 		
 end;
 
 procedure recogercarta(var palo:palos;var valor:valores);
