@@ -16,3 +16,5 @@ echadas
 asociado
 *.EXE
 JUGADOR
+*.err
+*.out

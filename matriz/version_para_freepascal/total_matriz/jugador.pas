@@ -271,7 +271,7 @@ begin
 					vacio1:=false;
 					piloto:=false;
 				end;
-	end;
+	        end;
 	if piloto=true
 	then
 		begin
