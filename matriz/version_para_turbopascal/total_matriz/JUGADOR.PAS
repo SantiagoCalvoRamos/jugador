@@ -405,7 +405,7 @@ procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:bool
                 encontrado:=false;
                 aquel:=no_hay;
                 preguntar_de_que_palo_echar(palo);
-                for i_valor:= uno to rey do
+                for i_valor:= rey downto uno do
                 begin
                      if matriz_cartas_recogidas[palo,i_valor] and not encontrado
                      then
