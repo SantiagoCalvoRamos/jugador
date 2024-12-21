@@ -45,15 +45,16 @@ var
 
 
 procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
-procedure recogercarta(var palo:palos;var valor:valores);
-procedure listarcartas;
-procedure iniciar;
+procedure recoger_carta_y_guardarla(var palo:palos;var valor:valores);
+procedure listar_cartas_recogidas;
+procedure inicializar_almacenamiento_de_cartas_recogidas;
+procedure preguntar_de_que_palo_echar(var palo3:palos);
 
 
 
 implementation
 
-procedure iniciar;
+procedure inicializar_almacenamiento_de_cartas_recogidas;
 	var
 		palo  : palos;
 		valor : valores;
@@ -116,9 +117,9 @@ procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:bool
 //Pedir una carta al usuario y guardarla en el
 //lugar de cartas recogidas
 }
-procedure recogercarta(var palo:palos;var valor:valores);
+procedure recoger_carta_y_guardarla(var palo:palos;var valor:valores);
           begin
-               damecarta(palo,valor);
+               dime_una_carta(palo,valor);
                matriz_cartas_recogidas[palo,valor]:=true;
           end;
 
@@ -126,7 +127,7 @@ procedure recogercarta(var palo:palos;var valor:valores);
 {
 //Listar las cartas que han sido recogidas
 }
-procedure listarcartas;
+procedure listar_cartas_recogidas;
           var
              i_palo,i_palo2:palos;
              i_valor,i_valor2:valores;

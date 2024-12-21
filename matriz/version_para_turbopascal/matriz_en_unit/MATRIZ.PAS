@@ -19,19 +19,22 @@ unit matriz;
 interface
 uses cartasen,consola;
 
+var
+   matriz_cartas_echadas:array[oros..bastos] of array[uno..rey] of boolean;
 
 
 
 
 
-procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
-procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
-procedure cartasechadas;
-procedure iniciar;
-procedure vaciar;
+
+procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
+procedure almacenar_carta_echada(var palo:palos;var valor:valores;var trol:boolean);
+procedure listar_cartas_echadas;
+procedure inicializar_almacenamiento_de_cartas_recogidas;
+procedure inicializar_almacenamiento_de_cartas_echadas;
 
 implementation
-procedure vaciar;
+procedure inicializar_almacenamiento_de_cartas_echadas;
 	var
 		palo:palos;
 		valor:valores;
@@ -41,7 +44,7 @@ procedure vaciar;
 				matriz_cartas_echadas[palo,valor]:=false;
 	end;
 
-procedure iniciar;
+procedure inicializar_almacenamiento_de_cartas_recogidas;
 	var
 		palo:palos;
 		valor:valores;
@@ -74,32 +77,38 @@ begin
 	then
 		begin
 			aquel:=nohay;
-			nohaycartas(aquel);
+			no_hay_o_no_hay_mas(aquel);
 			vacio1:=true;
 		end;
 end;
 
-procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
-var
-	cursor:valores;
-begin
-	echardelpalo(palo);
-	vacio:=vacio1(palo);
-	if vacio=false
-	then
-		for cursor:=rey to uno do
-			if matriz_cartas_recogidas[palo,cursor]=true
-			then
-				valor:=cursor;
-	matriz_cartas_recogidas[palo,valor]:=false;
-end;
+procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
+        var
+                i_valor:valores;
+                aquel:aquello;
+                encontrado:boolean;
+	begin
+                encontrado:=false;
+                aquel:=nohay;
+                preguntar_de_que_palo_echar(palo);
+                for i_valor:= rey downto uno do
+                begin
+                     if matriz_cartas_recogidas[palo,i_valor] and not encontrado
+                     then
+                         begin
+                              valor:=i_valor;
+                              encontrado:=true;
+                              vacio:=false;
+                         end
+                end;
 
-procedure cartasechadas;
+	end;
+
+procedure listar_cartas_echadas;
           var
-             i_valor,i_valor2:valores;
-             i_palo,i_palo2:palos;
+             i_valor:valores;
+             i_palo:palos;
              trol:boolean;
-             palo_txt,valor_txt:paquete;
           begin
            for i_palo:= oros to bastos do
                begin
@@ -108,14 +117,7 @@ procedure cartasechadas;
                         if matriz_cartas_echadas[i_palo,i_valor]=true
                         then
                             begin
-                                 {el_o_la(trol,i_palo,i_valor);}
-                                 i_palo2:=i_palo;
-                                 i_valor2:=i_valor;
-                                 valores_a_texto(i_valor2,valor_txt);
-                                 palos_a_texto(i_palo2,palo_txt);
-                                 if i_valor <> sota
-                                 then writeln('el ',valor_txt,' de ',palo_txt)
-                                 else writeln('la ',valor_txt,' de ',palo_txt);
+                                 el_o_la(trol,i_palo,i_valor);
                                  trol:=false;
                             end;
                    end;
@@ -129,9 +131,13 @@ procedure recogercarta(var palo:palos;var valor:valores);
 	end;
 }
 
-procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
-          var
+{
 
+//Guardar la carta echada
+}
+procedure almacenar_carta_echada(var palo:palos;var valor:valores;var trol:boolean);
+          var
+		{nuevo:cartas;}
                 elpalo_txt,elvalor_txt:paquete;
           begin
                valores_a_texto(valor,elvalor_txt);
@@ -141,7 +147,7 @@ procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
                if valor <> sota
                then writeln('echo el ',elvalor_txt,' de ',elpalo_txt)
                else writeln('echo la ',elvalor_txt,' de ',elpalo_txt);
-               vuelta:=false;
+               trol:=false;
           end;
 
 

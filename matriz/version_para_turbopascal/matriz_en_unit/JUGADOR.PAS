@@ -28,36 +28,52 @@ var palo:palos;
     opcion:opcions;
 
 
-procedure echarcarta(var palo:palos;var valor:valores;var vuelta:boolean);
+procedure echar_una_carta(var palo:palos;var valor:valores;var vuelta:boolean);
  begin
    vuelta:=true;
-   echarpalo(palo,valor,vuelta);
+   echar_carta_de_un_palo(palo,valor,vuelta);
    if vuelta=false
-      then almacenar(palo,valor,vuelta);
+      then almacenar_carta_echada(palo,valor,vuelta);
  end;
 
-procedure opciones(var opcion:opcions;var palo:palos;var valor:valores);
+{
+//Presentar el menu principal de opciones
+
+}
+procedure menu_principal(var opcion:opcions;var palo:palos;var valor:valores);
 begin
    palo:=oros;
-   valor:=sota;
-   opcionesconsola(opcion);
+   valor:=tres;
+   opciones_consola(opcion);
    case opcion of
-    recoger  : recogercarta(palo,valor);
-    listar   : listarcartas;
-    echar    : echarcarta(palo,valor,vuelta);
-    recordar : cartasechadas;
+    recoger  : recoger_carta_y_guardarla(palo,valor);
+    listar   : listar_cartas_recogidas;                 {//Lista las cartas recogidas}
+    echar    : echar_una_carta(palo,valor,vuelta);
+    recordar : listar_cartas_echadas;                {//Listar las cartas echadas}
     acabar   : ;
     end;
 end;
 
+procedure inicializacion;
+	begin
+	      	verlicencia;
+	      	iniciar_consola;
+	      	inicializar_almacenamiento_de_cartas_recogidas; {//Inicializar el almacenamiento de cartas recogidas}
+      		inicializar_almacenamiento_de_cartas_echadas;   {//Inicializar el almacenamiento de cartas echadas}
+      		{iniciar_matriz_cartas_recogidas;}
+      		{iniciar_matriz_cartas_echadas;}
+	end;
+
+procedure bucle_del_programa;
+	begin
+      		repeat
+          		palo:=copas;
+	  		valor:=rey;
+          		menu_principal(opcion,palo,valor);{//Presenta el menu principal de opciones}
+      		until opcion=acabar;
+	end;
+
 begin
-      verlicencia;
-      iniciar_consola;
-      iniciar;
-      vaciar;
-      repeat
-          palo:=copas;
-	  valor:=rey;
-	  opciones(opcion,palo,valor);
-      until opcion=acabar;
+      inicializacion;
+      bucle_del_programa;
 end.
