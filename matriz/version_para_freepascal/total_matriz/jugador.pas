@@ -18,24 +18,18 @@ program jugador;
 
 
 type
-	valores=(el_as,dos,tres,cuatro,cinco,seis,siete,sota,caballo,rey);
+	valores=(uno,dos,tres,cuatro,cinco,seis,siete,sota,caballo,rey);
 	opcions=(recoger,listar,echar,recordar,acabar);
 	palos=(oros,copas,espadas,bastos);	
-	tipopuntero=^colas;
-	colas=  record
-		        elvalor:valores;
-		        siguiente:tipopuntero;
-		        anterior:tipopuntero;
-		end;	
+
 	paquete= array[1..8] of char;
     	aquello=(nohay,nohaymas);
 	cartas=^carta;
-	carta=  record
-		        lospalos:palos;
-		        losvalores:valores;
-		        aotro:cartas;
-	        end;
-
+	carta=record
+		lospalos:palos;
+		losvalores:valores;
+		aotro:cartas;
+	       end;
 
 var 	
 	palo:palos;
@@ -43,31 +37,30 @@ var
     	vuelta:boolean;
     	opcion:opcions;
     	
-	asociado:file of carta;
-	echadas:file of carta;
 	
 	elpalo:palos;
 	elvalor:valores;
-	replica:carta;
-	
-   	prioros,
-   	pricopas,
-   	priespadas,
-   	pribastos,
-   	nuevo,
-   	ultioros,
-   	ulticopas,
-   	ultiespadas,
-   	ultibastos:tipopuntero;
-   	
-	supalo:palos;
-	suvalor:valores;
-	aquel:aquello;
-	raiz:cartas;
-	ultimo:cartas;	
-	cartas_recogidas:array[oros..bastos,el_as..rey] of boolean;
-        cartas_echadas:array[oros..bastos,el_as..rey] of boolean;
 
+	raiz_de_cartas_echadas:cartas;
+	ultimo_de_cartas_echadas:cartas;
+	
+   	
+	aquel:aquello;
+	cartas_recogidas:array[oros..bastos,uno..rey] of boolean;
+        cartas_echadas:array[oros..bastos,uno..rey] of boolean;
+
+procedure verlicencia;
+	begin
+        writeln('');
+        writeln('');
+	writeln('jugador Copyright (C) 2024 Santiago Calvo Ramos');
+	writeln('Este programa NO TIENE NINGUNA GARANTIA');
+        writeln('para obtener mas detalles, escriba show w');
+	writeln('Este es un software libre y puede redistribuirlo');
+	writeln('bajo ciertas condiciones; escriba show c para obtener mas detalles.');
+        writeln('');
+        writeln('');
+        end;
 
 procedure leerteclado(var entrada:paquete);
 var
@@ -131,7 +124,7 @@ procedure opcionesconsola(var opcion:opcions);
 procedure fallo3(var error3:boolean;var valor:valores;nombre:paquete);
 begin
 	error3:=true;
-	if nombre='as      ' then begin error3:=false;valor:=el_as end;
+	if nombre='as      ' then begin error3:=false;valor:=uno end;
 	if nombre='2       ' then begin error3:=false;valor:=dos end;
 	if nombre='3       ' then begin error3:=false;valor:=tres end;
 	if nombre='4       ' then begin error3:=false;valor:=cuatro end;
@@ -231,6 +224,48 @@ procedure cartasjugadas(var trol:boolean;palo:palos;valor:valores);
 		else writeln('la ',valor,' de ',palo);
 	end;
 
+
+{
+//Presentar al usuario el texto encabezando
+//a la lista de cartas que hayan sido echadas
+}
+procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
+        var
+           palo_txt,valor_txt:paquete;
+	begin
+		if trol
+		then
+			begin
+				writeln('');
+				writeln('Has escogido mi habilidad para recordar');
+				writeln('las cartas que han sido jugadas');
+				writeln('y aqui las listo en el orden');
+                                writeln('en que han sido jugadas');
+				writeln('');
+			end;
+		if valor <> sota
+		then writeln('el ',valor,' de ',palo)
+		else writeln('la ',valor,' de ',palo);
+	end;
+
+{
+//Pesentar el texto 'no hay cartas' o 'no hay mas cartas'
+//segun se indica con el parametro siaquello
+}
+procedure no_hay_o_no_hay_mas(var siaquello:aquello);
+	begin
+		case siaquello of
+		nohay:
+			begin
+				{writeln(chr(27),chr(35),chr(51),'no hay cartas');}
+				{//writeln(chr(27),chr(35),chr(52),'no hay cartas');}
+                                writeln('no hay cartas');
+			end;
+		nohaymas: writeln('no hay mas cartas');
+		end;
+	end;
+
+
 procedure nohaycartas(var siaquello:aquello);
 	begin
 		case siaquello of
@@ -246,12 +281,10 @@ procedure nohaycartas(var siaquello:aquello);
 
 procedure iniciar;
 	var
-		palo:palos;
-		valor:valores;
+		palo  : palos;
+		valor : valores;
 	begin
-		for palo:=oros to bastos do
-			for valor:=el_as to rey do
-                                cartas_recogidas[palo,valor]:=false;
+		for palo := oros to bastos do for valor := uno to rey do cartas_recogidas[palo,valor]:=false;
 	end;
 
 function vacio1(var palo:palos):boolean;
@@ -262,7 +295,7 @@ var
 	piloto:boolean;
 begin
 	piloto:=true;
-	for cursor:=el_as to rey do
+	for cursor:=uno to rey do
 		begin
                         vacio:=not cartas_recogidas[palo,valor];
 			if vacio=false
@@ -282,28 +315,26 @@ begin
 end;
 
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
-var
-	cursor:valores;
-	encontrado:boolean;
-begin
-	echardelpalo(palo);
-	vacio:=vacio1(palo);
-	//if vacio=false
-	if not vacio
-	then
-	begin	
-		encontrado:=false;
-		for cursor:=el_as to rey do
-                        if cartas_recogidas[palo,cursor]=true and not encontrado
-			then
-			begin	
-				valor:=cursor;
-        			cartas_recogidas[palo,valor]:=false;
-        			cartas_echadas[palo,valor]:=true;
-        			encontrado:=true;
-        		end;
-       end; 		
-end;
+        var
+                i_valor:valores;
+                aquel:aquello;
+                encontrado:boolean;
+	begin
+                encontrado:=false;
+                aquel:=nohay;
+                echardelpalo(palo);
+                for i_valor:= rey downto uno do
+                begin
+                     if cartas_recogidas[palo,i_valor] and not encontrado
+                     then
+                         begin
+                              valor:=i_valor;
+                              encontrado:=true;
+                              vacio:=false;
+                         end
+                end;
+
+	end;
 
 procedure recogercarta(var palo:palos;var valor:valores);
 	begin
@@ -320,7 +351,7 @@ procedure listarcartas;
 		for palo:=oros to bastos do
 			begin
 				piloto:=true;
-				for valor:=el_as to rey do
+				for valor:=uno to rey do
 					begin
                                                 if cartas_recogidas[palo,valor]=true
 						then
@@ -337,43 +368,38 @@ procedure listarcartas;
 	end;
 
 procedure vaciar;
+	var
+		palo  : palos;
+		valor : valores;
 	begin
-		raiz:=nil;
-		ultimo:=nil;
+		for palo := oros to bastos do for valor := uno to rey do cartas_echadas[palo,valor]:=false;
+	end;
+
+procedure inicializar_almacenamiento_de_cartas_echadas;
+	begin
+		raiz_de_cartas_echadas:=nil;
+		ultimo_de_cartas_echadas:=nil;
 	end;
 
 procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
-	var
-		nuevo:cartas;
-	begin
-		new(nuevo);
-		nuevo^.lospalos:=palo;
-		nuevo^.losvalores:=valor;
-		if ultimo=nil
-		then
-			begin
-				raiz:=nuevo;
-				ultimo:=nuevo;
-				nuevo^.aotro:=nil;
-			end
-		else
-			begin
-				ultimo^.aotro:=nuevo;
-				ultimo:=nuevo;
-				ultimo^.aotro:=nil;
-			end;
-		writeln('echo el ',valor,' de ',palo);
-	end;
+          begin
+               cartas_echadas[palo,valor]:=true;
+               cartas_recogidas[palo,valor]:=false;
+               if valor <> sota
+               then writeln('echo el ',valor,' de ',palo)
+               else writeln('echo la ',valor,' de ',palo);
+               trol:=false;
+          end;
 
 function vacio:boolean;
 var
 	aquel:aquello;
 begin
-	if ultimo=nil
+	if ultimo_de_cartas_echadas=nil
 	then
 		begin
 			aquel:=nohay;
-			nohaycartas(aquel);
+			no_hay_o_no_hay_mas(aquel);
 			vacio:=true;
 		end
 	else
@@ -381,31 +407,28 @@ begin
 end;
 
 procedure cartasechadas;
-	var
-		trol:boolean;
-		palo:palos;
-		valor:valores;
-		cursor:cartas;
-		aquel:aquello;
-	begin
-		if vacio=false
-		then
-			begin
-				trol:=true;
-				cursor:=raiz;
-				repeat
-					palo:=cursor^.lospalos;
-					valor:=cursor^.losvalores;
-					cartasjugadas(trol,palo,valor);
-					trol:=false;
-					cursor:=cursor^.aotro;
-				until cursor=nil;
-				aquel:=nohaymas;
-				nohaycartas(aquel);
-			end;
-	end;
+          var
+             i_valor:valores;
+             i_palo:palos;
+             trol:boolean;
+          begin
+           for i_palo:= oros to bastos do
+               begin
+                   for i_valor:= uno to rey do
+                   begin
+                        if cartas_echadas[i_palo,i_valor]=true
+                        then
+                            begin
+                                 el_o_la(trol,i_palo,i_valor);
+                                 trol:=false;
+                            end;
+                   end;
+               end;
+          end;
+
 procedure echarcarta(var palo:palos;var valor:valores;var vuelta:boolean);
  begin
+   vuelta:=true;
    echarpalo(palo,valor,vuelta);
    if vuelta=false
       then almacenar(palo,valor,vuelta);
@@ -426,6 +449,9 @@ begin
 end;
 
 begin
+  	verlicencia;
+
+
       iniciar;
       vaciar;
       repeat
