@@ -19,22 +19,10 @@ unit matriz;
 interface
 uses consola,cartasen;
 
-{
-type
-	palos=(oros,copas,espadas,bastos);
-	valores=(as,dos,tres,cuatro,cinco,seis,siete,sota,caballo,rey);
-	aquello=(nohay,nohaymas);
-}
 
 var
         cartas_echadas:array[oros..bastos,uno..rey] of boolean;
-{
-procedure nohaycartas(aquel:aquello);extern;
-procedure damecarta(palo:palos,valor:valores);extern;
-procedure echardelpalo(palo:palos,valor:valores);extern;
-}
 
-{procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);}
 procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
 
 
@@ -85,22 +73,6 @@ begin
 		end;
 end;
 
-{
-procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
-var
-	cursor:valores;
-begin
-	echardelpalo(palo);
-	vacio:=vacio1(palo);
-	if vacio=false
-	then
-		for cursor:=uno to rey do
-                        if cartas_echadas[palo,cursor]=true
-			then
-				valor:=cursor;
-        cartas_echadas[palo,valor]:=false;
-end;
-}
 
 procedure cartasechadas;
           var
@@ -122,27 +94,6 @@ procedure cartasechadas;
                end;
           end;
 
-{
-procedure cartasechadas;
-	begin
-                writeln('caracteristica no implementada');
-	end;
-}
-	
-{
-procedure recogercarta(var palo:palos;var valor:valores);
-	begin
-		damecarta(palo,valor);
-                cartas_echadas[palo,valor]:=true;
-	end;
-}
-
-{
-procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
-	begin
-                writeln('caracteristica no implementada');
-	end;
-}	
 	
 procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
           begin
@@ -153,31 +104,5 @@ procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
                else writeln('echo la ',valor,' de ',palo);
                trol:=false;
           end;
-{
-procedure listarcartas;
-	var
-		palo:palos;
-		valor:valores;
-		piloto:boolean;
-	begin
-		for palo:=oros to bastos do
-			begin
-				piloto:=true;
-				for valor:=uno to rey do
-					begin
-                                                if cartas_echadas[palo,valor]=true
-						then
-							begin
-								if valor <> sota
-								then writeln('tengo el ',valor,' de ',palo)
-								else writeln('tengo la ',valor,' de ',palo);
-								piloto:=false;
-							end;
-					end;
-				if piloto
-				then writeln('no tengo de ',palo);
-			end;
-	end;
-	}
 
 end.

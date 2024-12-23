@@ -176,7 +176,7 @@ procedure echardelpalo(var palo:palos);
 
 procedure cabeza3;
 begin
-	//page;
+
 	writeln('has escogido mi habilidad de coger cartas');
 	writeln('dime el palo y valor de la carta');
 end;
