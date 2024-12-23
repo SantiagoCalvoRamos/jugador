@@ -32,6 +32,7 @@ procedure damecarta(var palo4:palos;var valor2:valores);
 procedure opcionesconsola(var opcion:opcions);
 procedure cartasjugadas(var trol:boolean;var palo:palos;var valor:valores);
 procedure verlicencia;
+procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
 
 implementation
 
@@ -48,13 +49,37 @@ procedure verlicencia;
         writeln();
         end;
 
+{
+//Presentar al usuario el texto encabezando
+//a la lista de cartas que hayan sido echadas
+}
+procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
+        var
+           palo_txt,valor_txt:paquete;
+	begin
+		if trol
+		then
+			begin
+				writeln('');
+				writeln('Has escogido mi habilidad para recordar');
+				writeln('las cartas que han sido jugadas');
+				writeln('y aqui las listo en el orden');
+                                writeln('en que han sido jugadas');
+				writeln('');
+			end;
+		if valor <> sota
+		then writeln('el ',valor,' de ',palo)
+		else writeln('la ',valor,' de ',palo);
+	end;
+
+
 procedure leerteclado(var entrada:paquete);
 var
 	c:char;
 	k:integer;
 begin
 	c:=' ';writeln('? ');
-	while (c=' ') do read(c);
+	while (c=' ') or (c=chr(13)) or (c=chr(10)) do read(c);
 	k:=1;
 	while (c<>' ') and (k<=8) do
 		begin

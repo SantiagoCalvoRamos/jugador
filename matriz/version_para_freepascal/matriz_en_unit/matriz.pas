@@ -17,7 +17,7 @@ GNU junto con este programa. Si no es así, consulte <https://www.gnu.org/licens
 unit matriz;
 
 interface
-uses consola;
+uses consola,cartasen;
 
 {
 type
@@ -27,17 +27,17 @@ type
 }
 
 var
-	esto:array[oros..bastos,uno..rey] of boolean;
+        cartas_echadas:array[oros..bastos,uno..rey] of boolean;
 {
 procedure nohaycartas(aquel:aquello);extern;
 procedure damecarta(palo:palos,valor:valores);extern;
 procedure echardelpalo(palo:palos,valor:valores);extern;
 }
 
-procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
-procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
-procedure recogercarta(var palo:palos;var valor:valores);
-procedure listarcartas;
+{procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);}
+procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
+
+
 procedure cartasechadas;
 procedure iniciar;
 procedure vaciar;
@@ -54,7 +54,7 @@ procedure iniciar;
 	begin
 		for palo:=oros to bastos do
 			for valor:=uno to rey do
-				esto[palo,valor]:=false;
+                                cartas_echadas[palo,valor]:=false;
 	end;
 
 function vacio1(var palo:palos):boolean;
@@ -68,7 +68,7 @@ begin
 	piloto:=true;
 	for cursor:=uno to rey do	
 		begin
-			vacio:=not esto[palo,cursor];
+                        vacio:=not cartas_echadas[palo,cursor];
 			if vacio=false
 			then
 				begin
@@ -85,6 +85,7 @@ begin
 		end;
 end;
 
+{
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
 var
 	cursor:valores;
@@ -94,28 +95,65 @@ begin
 	if vacio=false
 	then
 		for cursor:=uno to rey do
-			if esto[palo,cursor]=true
+                        if cartas_echadas[palo,cursor]=true
 			then
 				valor:=cursor;
-	esto[palo,valor]:=false;
+        cartas_echadas[palo,valor]:=false;
 end;
+}
 
+procedure cartasechadas;
+          var
+             i_valor:valores;
+             i_palo:palos;
+             trol:boolean;
+          begin
+           for i_palo:= oros to bastos do
+               begin
+                   for i_valor:= uno to rey do
+                   begin
+                        if cartas_echadas[i_palo,i_valor]=true
+                        then
+                            begin
+                                 el_o_la(trol,i_palo,i_valor);
+                                 trol:=false;
+                            end;
+                   end;
+               end;
+          end;
+
+{
 procedure cartasechadas;
 	begin
                 writeln('caracteristica no implementada');
 	end;
-
+}
+	
+{
 procedure recogercarta(var palo:palos;var valor:valores);
 	begin
 		damecarta(palo,valor);
-		esto[palo,valor]:=true;
+                cartas_echadas[palo,valor]:=true;
 	end;
+}
 
+{
 procedure almacenar(var palo:palos;var valor:valores;var vuelta:boolean);
 	begin
                 writeln('caracteristica no implementada');
 	end;
-
+}	
+	
+procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
+          begin
+               cartas_echadas[palo,valor]:=true;
+               cartas_recogidas[palo,valor]:=false;
+               if valor <> sota
+               then writeln('echo el ',valor,' de ',palo)
+               else writeln('echo la ',valor,' de ',palo);
+               trol:=false;
+          end;
+{
 procedure listarcartas;
 	var
 		palo:palos;
@@ -127,7 +165,7 @@ procedure listarcartas;
 				piloto:=true;
 				for valor:=uno to rey do
 					begin
-						if esto[palo,valor]=true
+                                                if cartas_echadas[palo,valor]=true
 						then
 							begin
 								if valor <> sota
@@ -140,5 +178,6 @@ procedure listarcartas;
 				then writeln('no tengo de ',palo);
 			end;
 	end;
+	}
 
 end.

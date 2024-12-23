@@ -18,7 +18,7 @@ GNU junto con este programa. Si no es así, consulte <https://www.gnu.org/licens
 program jugador;
 uses
  	consola,
- 	//cartasen,
+ 	cartasen,
         matriz;
 
 

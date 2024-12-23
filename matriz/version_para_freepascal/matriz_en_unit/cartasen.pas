@@ -28,7 +28,7 @@ var
 	supalo:palos;
 	suvalor:valores;
 	aquel:aquello;
-
+	cartas_recogidas:array[oros..bastos,uno..rey] of boolean;
 
 
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
@@ -98,6 +98,28 @@ end;
 //la carta comprobando si de ese palo hay cartas
 //en el almacenamiento de cartas recogidas
 //procedure echar_carta_de_un_palo(var palo:palos;var valor:valores;var vacio:boolean);
+procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
+        var
+                i_valor:valores;
+                aquel:aquello;
+                encontrado:boolean;
+	begin
+                encontrado:=false;
+                aquel:=nohay;
+                echardelpalo(palo);
+                for i_valor:= rey downto uno do
+                begin
+                     if cartas_recogidas[palo,i_valor] and not encontrado
+                     then
+                         begin
+                              valor:=i_valor;
+                              encontrado:=true;
+                              vacio:=false;
+                         end
+                end;
+
+	end;
+{
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
 
 	var
@@ -244,7 +266,9 @@ procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
 			end;
 		end;
 	end;
+}
 
+{
 procedure ordenar(palo:palos);
 var
 	nuevos,primero,ultimo:tipopuntero;
@@ -289,8 +313,14 @@ begin
 			end;
 	end;
 end;
+}
 
-
+procedure recogercarta(var palo:palos;var valor:valores);
+	begin
+		damecarta(palo,valor);
+                cartas_recogidas[palo,valor]:=true;
+	end;
+{
 procedure recogercarta(var palo:palos;var valor:valores);
 var
 	nuevo,ultimo,primero:tipopuntero;
@@ -367,8 +397,35 @@ begin
         end;
 	ordenar(palo);
 end;
+}
+
+procedure listarcartas;
+	var
+		palo:palos;
+		valor:valores;
+		piloto:boolean;
+	begin
+		for palo:=oros to bastos do
+			begin
+				piloto:=true;
+				for valor:=uno to rey do
+					begin
+                                                if cartas_recogidas[palo,valor]=true
+						then
+							begin
+								if valor <> sota
+								then writeln('tengo el ',valor,' de ',palo)
+								else writeln('tengo la ',valor,' de ',palo);
+								piloto:=false;
+							end;
+					end;
+				if piloto
+				then writeln('no tengo de ',palo);
+			end;
+	end;
 
 
+{
 procedure listarcartas;
 	var
 		palo:palos;
@@ -422,4 +479,5 @@ procedure listarcartas;
 	                else writeln('no tengo de ',palo);
                 end;
 	end;
+	}
 end.
