@@ -41,58 +41,13 @@ procedure iniciar;
 implementation
 
 procedure iniciar;
+	var
+		palo  : palos;
+		valor : valores;
 	begin
-		prioros:=nil;
-		pricopas:=nil;
-		priespadas:=nil;
-		pribastos:=nil;
-		ultioros:=nil;
-		ulticopas:=nil;
-		ultiespadas:=nil;
-		ultibastos:=nil;
-		nuevo:=nil;
+		for palo := oros to bastos do for valor := uno to rey do cartas_recogidas[palo,valor]:=false;
 	end;
 
-function vacio1(var palo:palos;var valor:valores):boolean;
-var
-	nuevo,ultimo,primero:tipopuntero;
-	aquel:aquello;
-begin
-	case palo of
-	oros:
-		begin
-
-			ultimo:=ultioros;
-			primero:=prioros;
-		end;
-	copas:
-		begin
-
-			ultimo:=ulticopas;
-			primero:=pricopas;
-		end;
-	espadas:
-		begin
-
-			ultimo:=ultiespadas;
-			primero:=priespadas;
-		end;
-	bastos:
-		begin
-
-			ultimo:=ultibastos;
-			primero:=pribastos;
-		end;
-	end;
-	if primero=nil
-	then
-		begin
-			aquel:=nohay;
-			nohaycartas(aquel);
-			vacio1:=true;
-		end
-	else vacio1:=false;
-end;
 
 //Preguntar al usuario de que palo se ha de echar
 //la carta comprobando si de ese palo hay cartas
@@ -101,7 +56,6 @@ end;
 procedure echarpalo(var palo:palos;var valor:valores;var vacio:boolean);
         var
                 i_valor:valores;
-                aquel:aquello;
                 encontrado:boolean;
 	begin
                 encontrado:=false;
@@ -129,7 +83,7 @@ procedure recogercarta(var palo:palos;var valor:valores);
 
 procedure listarcartas;
 	var
-		palo:palos;
+		palo,i_palo:palos;
 		valor:valores;
 		piloto:boolean;
 	begin
@@ -141,14 +95,16 @@ procedure listarcartas;
                                                 if cartas_recogidas[palo,valor]=true
 						then
 							begin
-								if valor <> sota
-								then writeln('tengo el ',valor,' de ',palo)
-								else writeln('tengo la ',valor,' de ',palo);
+								tengo_el_o_la(palo,valor);
 								piloto:=false;
 							end;
 					end;
 				if piloto
-				then writeln('no tengo de ',palo);
+				then
+					begin
+						i_palo:=palo;
+						no_tengo_de(i_palo);
+					end;
 			end;
 	end;
 

@@ -27,15 +27,17 @@ procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
 
 
 procedure cartasechadas;
-procedure iniciar;
+{procedure iniciar;}
 procedure vaciar;
 
 implementation
+{
 procedure vaciar;
 	begin
 	end;
+}
 
-procedure iniciar;
+procedure vaciar;
 	var
 		palo:palos;
 		valor:valores;
@@ -49,7 +51,6 @@ function vacio1(var palo:palos):boolean;
 var
 	aquel:aquello;
 	cursor:valores;
-        valor:valores;
 	vacio:boolean;
 	piloto:boolean;
 begin
@@ -99,9 +100,8 @@ procedure almacenar(var palo:palos;var valor:valores;var trol:boolean);
           begin
                cartas_echadas[palo,valor]:=true;
                cartas_recogidas[palo,valor]:=false;
-               if valor <> sota
-               then writeln('echo el ',valor,' de ',palo)
-               else writeln('echo la ',valor,' de ',palo);
+               trol:=false;
+               echo_el_o_la(trol,palo,valor);
                trol:=false;
           end;
 

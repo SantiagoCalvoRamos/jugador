@@ -33,6 +33,9 @@ procedure opcionesconsola(var opcion:opcions);
 procedure cartasjugadas(var trol:boolean;var palo:palos;var valor:valores);
 procedure verlicencia;
 procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
+procedure echo_el_o_la(var trol:boolean;palo:palos;valor:valores);
+procedure tengo_el_o_la(palo:palos;valor:valores);
+procedure no_tengo_de(var palo:palos);
 
 implementation
 
@@ -49,13 +52,42 @@ procedure verlicencia;
         writeln();
         end;
 
+procedure no_tengo_de(var palo:palos);
+	begin
+		writeln('no tengo de ',palo);
+	end;
+
+procedure tengo_el_o_la(palo:palos;valor:valores);
+	begin
+		if valor <> sota
+		then writeln('tengo el ',valor,' de ',palo)
+		else writeln('tengo la ',valor,' de ',palo);
+	end;
+
+
+procedure echo_el_o_la(var trol:boolean;palo:palos;valor:valores);
+	begin
+		if trol
+		then
+			begin
+				writeln('');
+				writeln('Has escogido mi habilidad para recordar');
+				writeln('las cartas que han sido jugadas');
+				writeln('y aqui las listo en el orden');
+                                writeln('en que han sido jugadas');
+				writeln('');
+			end;
+		if valor <> sota
+		then writeln('echo el ',valor,' de ',palo)
+		else writeln('echo la ',valor,' de ',palo);
+	end;
+
+
 {
 //Presentar al usuario el texto encabezando
 //a la lista de cartas que hayan sido echadas
 }
 procedure el_o_la(var trol:boolean;palo:palos;valor:valores);
-        var
-           palo_txt,valor_txt:paquete;
 	begin
 		if trol
 		then
